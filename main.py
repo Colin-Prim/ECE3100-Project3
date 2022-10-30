@@ -84,28 +84,30 @@ class Trip:
         self.max = max(self._speed)
 
 
-def main():
+def test_main():
+    # a dictionary is the best way to create an unknown number of variables in Python
     dictionary_of_trips = {}
     for i in range(1, 7):
         file_name = '15minTrip' + str(i)
         df = pd.read_csv(file_name + '.csv')
-        time_list = df['Time'].to_list()
-        speed_list = df['Vehicle speed'].to_list()
-        dictionary_of_trips[i] = Trip(time_list, speed_list, file_name)
+        dictionary_of_trips[i] = Trip(df['Time'].to_list(), df['Vehicle speed'].to_list(), file_name)
 
         dictionary_of_trips[i].plot_trip()
         dictionary_of_trips[i].box_plot_trip()
         print(dictionary_of_trips[i])
         print()
 
+    # find all distances using redefined __sub__ method
     for i in range(1, 7):
+        # do not calculate distance between a trip and itself, it will always be 0
         for j in range(1, 7):
             if j == i:
                 continue
             else:
-                print(f"The Euclidean distance between trip {i} and trip {j} is"
+                # this line was changed after submission
+                print(f"The Euclidean distance between trip {i} and trip {j} is:" 
                       f"{dictionary_of_trips[i] - dictionary_of_trips[j]: .2f}")
 
 
 if __name__ == "__main__":
-    main()
+    test_main()
