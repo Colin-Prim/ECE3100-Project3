@@ -24,7 +24,7 @@ class Trip:
         self._calculate_five_number_summary()
 
     def __sub__(self, other):
-        """Calculates Euclidean distance (√Σ dist²) between the 5-number summary of two data sets"""
+        """Calculates Euclidean distance (√Σ dist²) between the 5-number summary of two data sets."""
         distances_squared = [(self.min - other.min) ** 2,
                              (self.q1 - other.q1) ** 2,
                              (self.median - other.median) ** 2,
@@ -33,12 +33,13 @@ class Trip:
         return sqrt(sum(distances_squared))
 
     def __str__(self):
+        """Self-defined method to easily print 5-number summary."""
         return f"{self._name: ^12}\n" \
-                      f"{'Min:': <8}{self.min: .2f}\n" \
-                      f"{'Q1:': <8}{self.q1: .2f}\n" \
-                      f"{'Median:': <8}{self.median: .2f}\n" \
-                      f"{'Q3:': <8}{self.q3: .2f}\n" \
-                      f"{'Max:': <8}{self.max: .2f}"
+               f"{'Min:': <8}{self.min: .2f}\n" \
+               f"{'Q1:': <8}{self.q1: .2f}\n" \
+               f"{'Median:': <8}{self.median: .2f}\n" \
+               f"{'Q3:': <8}{self.q3: .2f}\n" \
+               f"{'Max:': <8}{self.max: .2f}"
 
     def _remove_nan(self):
         """There are some values which return NaN when inputted into a dataframe. This method removes those."""
@@ -105,7 +106,7 @@ def test_main():
                 continue
             else:
                 # this line was changed after submission
-                print(f"The Euclidean distance between trip {i} and trip {j} is:" 
+                print(f"The Euclidean distance between trip {i} and trip {j} is:"
                       f"{dictionary_of_trips[i] - dictionary_of_trips[j]: .2f}")
 
 
