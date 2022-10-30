@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from numpy import array, percentile, sqrt
+from numpy import percentile, sqrt
+from math import isnan
 
 
 class Trip:
@@ -9,6 +10,8 @@ class Trip:
         self._time = time
         self._speed = speed
         self._name = name
+
+        self._remove_nan()
 
         #  flag variables for easy comparison
         self.min = 0
@@ -36,6 +39,20 @@ class Trip:
                       f"{'Median:': <8}{self.median: .2f}\n" \
                       f"{'Q3:': <8}{self.q3: .2f}\n" \
                       f"{'Max:': <8}{self.max: .2f}"
+
+    def _remove_nan(self):
+        """There are some values which return NaN when inputted into a dataframe. This method removes those."""
+        new_time_list = []
+        new_speed_list = []
+        for i in range(len(self._time)):
+            if isnan(self._time[i]) or isnan(self._speed[i]):
+                continue
+            else:
+                new_time_list.append(self._time[i])
+                new_speed_list.append(self._speed[i])
+
+        self._time = new_time_list
+        self._speed = new_speed_list
 
     def plot_trip(self):
         """Public method to plot the set of data from a trip. This function closes the plot after it is shown
@@ -72,7 +89,9 @@ def main():
     for i in range(1, 7):
         file_name = '15minTrip' + str(i)
         df = pd.read_csv(file_name + '.csv')
-        dictionary_of_trips[i] = Trip(df['Time'].to_numpy(), df['Vehicle speed'].to_numpy(), file_name)
+        time_list = df['Time'].to_list()
+        speed_list = df['Vehicle speed'].to_list()
+        dictionary_of_trips[i] = Trip(time_list, speed_list, file_name)
 
         dictionary_of_trips[i].plot_trip()
         dictionary_of_trips[i].box_plot_trip()
@@ -84,7 +103,7 @@ def main():
             if j == i:
                 continue
             else:
-                print(f"The Euclidean distance between trip {i} and trip {j} is "
+                print(f"The Euclidean distance between trip {i} and trip {j} is"
                       f"{dictionary_of_trips[i] - dictionary_of_trips[j]: .2f}")
 
 
